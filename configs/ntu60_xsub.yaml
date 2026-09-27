@@ -1,0 +1,34 @@
+output_dir: runs/ntu60_xsub
+device: auto
+seed: 1
+num_workers: 4
+
+model:
+  in_channels: 3
+  num_class: 60
+  dropout: 0.5
+  edge_importance_weighting: true
+  graph_args:
+    layout: ntu-rgb+d
+    strategy: spatial
+
+dataset:
+  train:
+    data_path: data/ntu60/xsub/train_data.npy
+    label_path: data/ntu60/xsub/train_label.pkl
+  val:
+    data_path: data/ntu60/xsub/val_data.npy
+    label_path: data/ntu60/xsub/val_label.pkl
+
+training:
+  batch_size: 64
+  eval_batch_size: 64
+  epochs: 80
+  base_lr: 0.1
+  steps: [10, 50]
+  momentum: 0.9
+  nesterov: true
+  weight_decay: 0.0001
+  log_interval: 100
+  eval_interval: 5
+  save_interval: 10

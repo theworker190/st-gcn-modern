@@ -1,0 +1,37 @@
+output_dir: runs/kinetics400
+device: auto
+seed: 1
+num_workers: 4
+
+model:
+  in_channels: 3
+  num_class: 400
+  dropout: 0.0
+  edge_importance_weighting: true
+  graph_args:
+    layout: openpose
+    strategy: spatial
+
+dataset:
+  train:
+    data_path: data/kinetics400/train_data.npy
+    label_path: data/kinetics400/train_label.pkl
+    random_choose_sequence: true
+    random_move_sequence: true
+    window_size: 150
+  val:
+    data_path: data/kinetics400/val_data.npy
+    label_path: data/kinetics400/val_label.pkl
+
+training:
+  batch_size: 256
+  eval_batch_size: 256
+  epochs: 50
+  base_lr: 0.1
+  steps: [20, 30, 40, 50]
+  momentum: 0.9
+  nesterov: true
+  weight_decay: 0.0001
+  log_interval: 100
+  eval_interval: 5
+  save_interval: 10
