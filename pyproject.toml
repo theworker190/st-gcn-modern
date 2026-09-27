@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "st-gcn-modern"
+version = "0.1.0"
+description = "A lightweight, faithful modernization of the original ST-GCN baseline"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = [
+  "numpy>=1.24",
+  "pyyaml>=6.0",
+  "torch>=2.2",
+]
+
+[project.urls]
+Upstream = "https://github.com/yysijie/st-gcn"
+Paper = "https://arxiv.org/abs/1801.07455"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+include = ["stgcn*"]
+
+[tool.setuptools.package-data]
+"stgcn.data" = ["*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

@@ -1,7 +1,9 @@
 #custom
 tmp*
 work_dir/*
-data
+runs/
+results/
+/data/
 config_v0/*
 backup/*
 .vscode
