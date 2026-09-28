@@ -153,13 +153,11 @@ ST-GCN models. They have not yet been independently reproduced by this fork.
 
 | Model | Kinetics-Skeleton top-1 | NTU 60 cross-view | NTU 60 cross-subject |
 |---|---:|---:|---:|
-| Temporal-convolution baseline reported upstream | 20.3% | 83.1% | 74.3% |
 | ST-GCN reported upstream | **31.6%** | **88.8%** | **81.6%** |
 
 ### Independently reproduced results
 
-No results have been recorded yet. Add hardware, software versions, config,
-checkpoint, and measured metrics here after an independent run.
+No results have been recorded yet.
 
 ## Scope and repository map
 
