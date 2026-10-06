@@ -3,6 +3,8 @@
 import torch
 from torch import nn
 
+from .normalization import ReplicaBatchNorm2d
+
 
 class ConvTemporalGraphical(nn.Module):
     """Apply the spatial graph convolution from the original ST-GCN."""
@@ -62,7 +64,7 @@ class STGCNBlock(nn.Module):
         padding = ((kernel_size[0] - 1) // 2, 0)
         self.gcn = ConvTemporalGraphical(in_channels, out_channels, kernel_size[1])
         self.tcn = nn.Sequential(
-            nn.BatchNorm2d(out_channels),
+            ReplicaBatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(
                 out_channels,
@@ -71,7 +73,7 @@ class STGCNBlock(nn.Module):
                 (stride, 1),
                 padding,
             ),
-            nn.BatchNorm2d(out_channels),
+            ReplicaBatchNorm2d(out_channels),
             nn.Dropout(dropout, inplace=True),
         )
 
@@ -87,7 +89,7 @@ class STGCNBlock(nn.Module):
                     kernel_size=1,
                     stride=(stride, 1),
                 ),
-                nn.BatchNorm2d(out_channels),
+                ReplicaBatchNorm2d(out_channels),
             )
         self.relu = nn.ReLU(inplace=True)
 

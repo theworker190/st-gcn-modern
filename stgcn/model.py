@@ -6,6 +6,7 @@ from torch.nn import functional as F
 
 from .graph import Graph
 from .layers import STGCNBlock
+from .normalization import ReplicaBatchNorm1d
 
 
 class STGCN(nn.Module):
@@ -31,7 +32,7 @@ class STGCN(nn.Module):
 
         spatial_kernel_size = adjacency.size(0)
         kernel_size = (9, spatial_kernel_size)
-        self.data_bn = nn.BatchNorm1d(in_channels * adjacency.size(1))
+        self.data_bn = ReplicaBatchNorm1d(in_channels * adjacency.size(1))
         self.st_gcn_networks = nn.ModuleList(
             (
                 STGCNBlock(

@@ -9,7 +9,11 @@ import yaml
 from torch import nn
 from torch.utils.data import DataLoader
 
-from stgcn.checkpoint import restore_training_checkpoint, save_training_checkpoint
+from stgcn.checkpoint import (
+    load_checkpoint_file,
+    restore_training_checkpoint,
+    save_training_checkpoint,
+)
 from stgcn.config import build_dataset, build_model, load_config
 from stgcn.model import initialize_weights
 from stgcn.runtime import configure_logging, evaluate, resolve_device, seed_everything
@@ -30,6 +34,17 @@ def main():
     training = config["training"]
     output_dir = args.output_dir or Path(config.get("output_dir", "runs/stgcn"))
     device = resolve_device(args.device or str(config.get("device", "auto")))
+    shards = training.get("batch_norm_shards", 1)
+    if (
+        not isinstance(shards, int) or isinstance(shards, bool)
+        or shards < 1 or int(training["batch_size"]) % shards
+    ):
+        raise ValueError("batch_size must be divisible by positive batch_norm_shards")
+    saved = load_checkpoint_file(args.resume) if args.resume else None
+    if saved is not None:
+        saved_shards = saved.get("config", {}).get("training", {}).get("batch_norm_shards", 1)
+        if saved_shards != shards:
+            raise ValueError("Resume checkpoint uses different batch_norm_shards; start a fresh run")
     seed_everything(int(config.get("seed", 1)))
     logger = configure_logging(output_dir)
 

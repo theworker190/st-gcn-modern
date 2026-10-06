@@ -7,6 +7,7 @@ import yaml
 
 from .data import SkeletonDataset
 from .model import STGCN
+from .normalization import configure_batch_norm
 
 
 def load_config(path):
@@ -21,7 +22,9 @@ def load_config(path):
 
 
 def build_model(config):
-    return STGCN(**dict(config["model"]))
+    model = STGCN(**dict(config["model"]))
+    configure_batch_norm(model, config["training"].get("batch_norm_shards", 1))
+    return model
 
 
 def build_dataset(config, split):

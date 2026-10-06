@@ -25,6 +25,7 @@ dataset:
 
 training:
   batch_size: 256
+  batch_norm_shards: 4  # Upstream: batch 256 on four GPUs.
   eval_batch_size: 256
   epochs: 50
   base_lr: 0.1
